@@ -1,0 +1,10 @@
+services:
+  tf28:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: python-tensorflow:2.8.0
+    container_name: python-tensorflow
+    volumes:
+      - .:/app
+    command: bash
