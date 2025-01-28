@@ -90,7 +90,18 @@ def VISUALISE_SEGMENTATION_RESULTS(IMAGE, FONTSIZE, FIGURE_TITLE, FIGSIZE, CHANN
     plt.savefig(OUTPUT, bbox_inches='tight', dpi=300)
     plt.close(fig)
 
-
+def try_dims():
+    file = "./data/5-20220905_CaptureDL_00_fagradalsfjall_t_l_2022_09_05T12_37_23-radiance.npy"
+    array = np.load(file)
+    print(array.shape)
+    print(array)
+    print("==========================")
+    print("==========================")
+    print("==========================")
+    file = "./data/fagradalsfjall_t_l_2022_09_05T12_37_23_class_NPY_FORMAT.npy"
+    array = np.load(file)
+    print(array.shape)
+    print(array)
 
 def main():
     utils_o=utils_for_data_handling() # Create object of local class
@@ -102,9 +113,9 @@ def main():
 
     PATHS_TO_DATA = []  # Empty list for paths
     # The images below are directly accessible for download in the supplementary material of our article: "Sea-Land-Cloud Segmentation in Satellite Hyperspectral Imagery by Deep Learning"
-    PATHS_TO_DATA.append(
-        DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '8-20220911_CaptureDL_00_haida_2022_09_11T19_24_10-radiance.npy')
+    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '5-20220905_CaptureDL_00_fagradalsfjall_t_l_2022_09_05T12_37_23-radiance.npy')
     """
+    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '8-20220911_CaptureDL_00_haida_2022_09_11T19_24_10-radiance.npy')
     PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '22-20221118_CaptureDL_sanrafael_2022_11_16T14_13_57-radiance.npy')
     PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '23-20221011_CaptureDL_rrvPlaya_2022_10_10T18_22_33-radiance.npy')
     PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '33-20221215_CaptureDL_maunaloa_2022_12_02T20_03_26-radiance.npy')
@@ -146,7 +157,7 @@ def main():
 
     ### MODEL ###
 
-    DATA_PROCESSING_MODE = '3D_PROCESSING'  # Choose: '1D_PROCESSING', or '3D_PROCESSING'
+    DATA_PROCESSING_MODE = '1D_PROCESSING'  # Choose: '1D_PROCESSING', or '3D_PROCESSING'
 
     if DATA_PROCESSING_MODE == '1D_PROCESSING':
         # As an example, we use the model 'DEEP_LEARNING_NN_classifier_20231009_203324'
@@ -155,7 +166,7 @@ def main():
         #           - details provided in the article referenced at the start of this Python notebook)
 
         # Example path - models available in supplementary material of article cited at the start of this notebook
-        PATH_TO_MODEL = 'C:/Users/JONAJUSTO/Desktop/SAVED_MODELS_SEALANDCLOUD_SEGM/MAIN_MODEL_EXPERIMENTS/DEEP LEARNING MODELS/DEEP_LEARNING_NN_classifier_20231009_203324'
+        PATH_TO_MODEL = './models/DEEP_LEARNING_NN_classifier_20231009_203324'
 
         # Note: When testing different models, make sure to feed the models with data of the same characteristics as in the training, as explained next.
         #            For instance, if a model has been trained on L1b radiance, then the data during inference must also be L1b radiance - likewise for unprocessed raw data.
@@ -177,6 +188,7 @@ def main():
     model_classifier.summary()
 
     ### LOAD IMAGES ###
+
     LINES = 956
     SAMPLES = 684
     CHANNELS = 120  # Lines (frames), slit samples (swath), and channels are set to default values for HYPSO-1
@@ -192,7 +204,7 @@ def main():
     ### SAVE IMAGE EXAMPLE ###
 
     # Choose one image in the array DATA. As an example, we pick next channel 89 which corresponds to the visible red (699.61 nm) in L1b calibration
-    IMAGE = 1
+    IMAGE = 0
     CHANNEL = 89
 
     CHANNEL_GRAY_SCALE = DATA[IMAGE, :, :, [CHANNEL]]  # Result has dimensions: 1 x 956 x684
@@ -326,108 +338,107 @@ def main():
         # Note: no need to flatten the patches for the labels as they are mere dummy annotations used previously to be able to call the methods for
         #       padding and patching (these methods expect to receive both data and labels at the same time).
 
-        ### INFERENCE ###
+    ### INFERENCE ###
 
-        print('Tip: make sure GPU is enabled next for faster inference.\n')
-        print('Accessible devices by Tensorflow (check if any GPU is in the list):\n ',
+    print('Tip: make sure GPU is enabled next for faster inference.\n')
+    print('Accessible devices by Tensorflow (check if any GPU is in the list):\n ',
               tf.config.list_physical_devices())
-        print(
+    print(
             '\nSegmentation inference running (it may take some time depending on the model, GPU, and number of images to segment)...')
 
-        print('Number of images to segment: ', NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, \
+    print('Number of images to segment: ', NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, \
               '\nFor instance, if each image takes for instance 15s (as in 1D-Justo-LiuNet), then the segmentation of e.g. 30 images would take over 7 minutes.')
-        print('\nReminder of results: for 3D-Processing inferece time is significantly smaller')
-        STARTING_TIME = time.time()
-        PREDICTION = model_classifier.predict(DATA_FLATTENED)
-        FINISH_TIME = time.time()
+    print('\nReminder of results: for 3D-Processing inferece time is significantly smaller')
+    STARTING_TIME = time.time()
+    PREDICTION = model_classifier.predict(DATA_FLATTENED)
+    FINISH_TIME = time.time()
 
-        print('Inference completed!')
-        INFERENCE_TIME = FINISH_TIME - STARTING_TIME
-        print(f'Inference time to segment the image: {round(INFERENCE_TIME, 2)} seconds.')
+    print('Inference completed!')
+    INFERENCE_TIME = FINISH_TIME - STARTING_TIME
+    print(f'Inference time to segment the image: {round(INFERENCE_TIME, 2)} seconds.')
 
-        ### POST: CATEGORICAL PREDICTIONS AND CONFIDENCE ###
+    ### POST: CATEGORICAL PREDICTIONS AND CONFIDENCE ###
 
-        print('Predictions from inference have dimensions: ', PREDICTION.shape, ', and dtype: ', PREDICTION.dtype)
-        PREDICTED_PROBABILITY = np.max(PREDICTION,
-                                       axis=-1)  # Largest probability, referred henceforth as 'confidence probability', which
-        # determines the degree of confidence of the model when making a prediction for a pixel
-        PREDICTED_CATEGORICAL_CLASS = np.uint8(np.argmax(PREDICTION, axis=-1))  # The final categorical prediction
+    print('Predictions from inference have dimensions: ', PREDICTION.shape, ', and dtype: ', PREDICTION.dtype)
+    PREDICTED_PROBABILITY = np.max(PREDICTION,
+                axis=-1)  # Largest probability, referred henceforth as 'confidence probability', which
 
-        print('Dimensions when computing ONLY the categorical prediction for each pixel: ',
-              PREDICTED_CATEGORICAL_CLASS.shape, ', and dtype: ', PREDICTED_CATEGORICAL_CLASS.dtype)
-        print('Dimensions for the confidence probabilities: ', PREDICTED_PROBABILITY.shape, ', and dtype: ',
-              PREDICTED_PROBABILITY.dtype)
+    # determines the degree of confidence of the model when making a prediction for a pixel
+    PREDICTED_CATEGORICAL_CLASS = np.uint8(np.argmax(PREDICTION, axis=-1))  # The final categorical prediction
 
-        ### POST: DIMENSION ARRANGMENT ###
-        # At this point, arange dimensions for PREDICTED_CATEGORICAL_CLASS and PREDICTED_PROBABILITY
-        if DATA_PROCESSING_MODE == '1D_PROCESSING':
-            print('Unflattening data points...')
-            PREDICTED_CATEGORICAL_CLASS = PREDICTED_CATEGORICAL_CLASS.reshape(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, LINES,
-                                                                              SAMPLES)
-            PREDICTED_PROBABILITY = PREDICTED_PROBABILITY.reshape(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, LINES, SAMPLES)
+    print('Dimensions when computing ONLY the categorical prediction for each pixel: ',
+    PREDICTED_CATEGORICAL_CLASS.shape, ', and dtype: ', PREDICTED_CATEGORICAL_CLASS.dtype)
+    print('Dimensions for the confidence probabilities: ', PREDICTED_PROBABILITY.shape, ', and dtype: ',
+    PREDICTED_PROBABILITY.dtype)
 
-            print('UNFLATTENED OK - Dimensions for segmented dataset (categorical): ',
-                  PREDICTED_CATEGORICAL_CLASS.shape, ', and dtype: ', PREDICTED_CATEGORICAL_CLASS.dtype)
-            print('UNFLATTENED OK - Dimensions for the confidence probabilities for the segmented dataset: ',
-                  PREDICTED_PROBABILITY.shape, ', and dtype: ', PREDICTED_PROBABILITY.dtype)
+    ### POST: DIMENSION ARRANGMENT ###
+    # At this point, arange dimensions for PREDICTED_CATEGORICAL_CLASS and PREDICTED_PROBABILITY
+    if DATA_PROCESSING_MODE == '1D_PROCESSING':
+        print('Unflattening data points...')
+        PREDICTED_CATEGORICAL_CLASS = PREDICTED_CATEGORICAL_CLASS.reshape(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, LINES,
+        SAMPLES)
+        PREDICTED_PROBABILITY = PREDICTED_PROBABILITY.reshape(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, LINES, SAMPLES)
 
-        elif DATA_PROCESSING_MODE == '3D_PROCESSING':
+        print('UNFLATTENED OK - Dimensions for segmented dataset (categorical): ',
+        PREDICTED_CATEGORICAL_CLASS.shape, ', and dtype: ', PREDICTED_CATEGORICAL_CLASS.dtype)
+        print('UNFLATTENED OK - Dimensions for the confidence probabilities for the segmented dataset: ',
+        PREDICTED_PROBABILITY.shape, ', and dtype: ', PREDICTED_PROBABILITY.dtype)
 
-            # Stage 1: Unflatten the patches
-            print('Unflattening patches...')
-            PREDICTED_CATEGORICAL_CLASS = \
-                PREDICTED_CATEGORICAL_CLASS.reshape(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, \
-                                                    NUMBER_OF_PATCHES_IN_LINES_DIMENSION_ADJUSTED,
-                                                    NUMBER_OF_PATCHES_IN_SAMPLES_DIMENSION_ADJUSTED, \
-                                                    PATCH_SIZE, PATCH_SIZE)
-            PREDICTED_PROBABILITY = \
-                PREDICTED_PROBABILITY.reshape(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, \
-                                              NUMBER_OF_PATCHES_IN_LINES_DIMENSION_ADJUSTED,
-                                              NUMBER_OF_PATCHES_IN_SAMPLES_DIMENSION_ADJUSTED, \
-                                              PATCH_SIZE, PATCH_SIZE)
-            # We ensure to have the following dimensions:
-            #   NUMBER_OF_IMAGES x NUMBER_OF_PATCHES_IN_LINES_DIMENSIONS x NUMBER_OF_PATCHES_IN_SAMPLES_DIMENSIONS x PATCH_SIZE x PATCH_SIZE
+    elif DATA_PROCESSING_MODE == '3D_PROCESSING':
 
-            print('UNFLATTENED patches (categorical) have now dimension: ', PREDICTED_CATEGORICAL_CLASS.shape,
-                  ', and dtype: ', PREDICTED_CATEGORICAL_CLASS.dtype)
-            print('UNFLATTENED patches (confidence probability) have now dimension: ', PREDICTED_PROBABILITY.shape,
-                  ', and dtype: ', PREDICTED_PROBABILITY.dtype)
+        # Stage 1: Unflatten the patches
+        print('Unflattening patches...')
+        PREDICTED_CATEGORICAL_CLASS = \
+        PREDICTED_CATEGORICAL_CLASS.reshape(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, \
+        NUMBER_OF_PATCHES_IN_LINES_DIMENSION_ADJUSTED,
+        NUMBER_OF_PATCHES_IN_SAMPLES_DIMENSION_ADJUSTED, \
+        PATCH_SIZE, PATCH_SIZE)
+        PREDICTED_PROBABILITY = \
+        PREDICTED_PROBABILITY.reshape(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, \
+        NUMBER_OF_PATCHES_IN_LINES_DIMENSION_ADJUSTED,
+        NUMBER_OF_PATCHES_IN_SAMPLES_DIMENSION_ADJUSTED, \
+        PATCH_SIZE, PATCH_SIZE)
+        # We ensure to have the following dimensions:
+        #   NUMBER_OF_IMAGES x NUMBER_OF_PATCHES_IN_LINES_DIMENSIONS x NUMBER_OF_PATCHES_IN_SAMPLES_DIMENSIONS x PATCH_SIZE x PATCH_SIZE
 
-            # Stage 2: Unpatch
-            print('\nThe unpatching next is for the categorical predictions:')
-            PREDICTED_CATEGORICAL_CLASS = \
-                utils_o.unpatch_predictions(PREDICTIONS_patched=PREDICTED_CATEGORICAL_CLASS, \
-                                            TARGET_shape=(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, LINES_AFTER_PADDING,
-                                                          SAMPLES_AFTER_PADDING), \
-                                            PATCH_SIZE=PATCH_SIZE)
-            print('\nThe unpatching next is for the confidence probabilities:')
-            PREDICTED_PROBABILITY = \
-                utils_o.unpatch_predictions(PREDICTIONS_patched=PREDICTED_PROBABILITY, \
-                                            TARGET_shape=(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, LINES_AFTER_PADDING,
-                                                          SAMPLES_AFTER_PADDING), \
-                                            PATCH_SIZE=PATCH_SIZE)
+        print('UNFLATTENED patches (categorical) have now dimension: ', PREDICTED_CATEGORICAL_CLASS.shape,
+        ', and dtype: ', PREDICTED_CATEGORICAL_CLASS.dtype)
+        print('UNFLATTENED patches (confidence probability) have now dimension: ', PREDICTED_PROBABILITY.shape,
+        ', and dtype: ', PREDICTED_PROBABILITY.dtype)
 
-            ### VISUALIZE ###
+        # Stage 2: Unpatch
+        print('\nThe unpatching next is for the categorical predictions:')
+        PREDICTED_CATEGORICAL_CLASS = \
+        utils_o.unpatch_predictions(PREDICTIONS_patched=PREDICTED_CATEGORICAL_CLASS, \
+        TARGET_shape=(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, LINES_AFTER_PADDING,
+        SAMPLES_AFTER_PADDING), \
+        PATCH_SIZE=PATCH_SIZE)
+        print('\nThe unpatching next is for the confidence probabilities:')
+        PREDICTED_PROBABILITY = \
+        utils_o.unpatch_predictions(PREDICTIONS_patched=PREDICTED_PROBABILITY, \
+        TARGET_shape=(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, LINES_AFTER_PADDING,
+        SAMPLES_AFTER_PADDING), \
+        PATCH_SIZE=PATCH_SIZE)
 
-            OUTPUT_PATH = "./images"
-            for iterator_segmented_image in range(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET):
-                print(PATHS_TO_DATA[iterator_segmented_image])
+    ### VISUALIZE ###
 
-                # Visualise next the results from the segmentation model
-                VISUALISE_SEGMENTATION_RESULTS(IMAGE=iterator_segmented_image, \
-                                               FONTSIZE=14, \
-                                               FIGURE_TITLE='Segmentation results', \
-                                               FIGSIZE=(17, 6), \
-                                               CHANNEL=89, \
-                                               DATA=DATA, \
-                                               SEGMENTED_IMAGE=PREDICTED_CATEGORICAL_CLASS[iterator_segmented_image, :,
-                                                               :], \
-                                               CONFIDENCE_PROBABILITY_SPATIAL_DOMAIN=PREDICTED_PROBABILITY[
-                                                                                     iterator_segmented_image, :, :], \
-                                               LINES=PREDICTED_CATEGORICAL_CLASS.shape[1], \
-                                               SAMPLES=PREDICTED_CATEGORICAL_CLASS.shape[2],
-                                               OUTPUT_PATH=OUTPUT_PATH)
-                # CHANNEL is to select one channel for visualisation and comparison purposes for the figures
+    OUTPUT_PATH = "./images"
+    for iterator_segmented_image in range(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET):
+        print(PATHS_TO_DATA[iterator_segmented_image])
+        # Visualise next the results from the segmentation model
+        VISUALISE_SEGMENTATION_RESULTS(IMAGE=iterator_segmented_image, \
+        FONTSIZE=14, \
+        FIGURE_TITLE='Segmentation results', \
+        FIGSIZE=(17, 6), \
+        CHANNEL=89, \
+        DATA=DATA, \
+        SEGMENTED_IMAGE=PREDICTED_CATEGORICAL_CLASS[iterator_segmented_image, :,
+        :], \
+        CONFIDENCE_PROBABILITY_SPATIAL_DOMAIN=PREDICTED_PROBABILITY[
+        iterator_segmented_image, :, :], \
+        LINES=PREDICTED_CATEGORICAL_CLASS.shape[1], \
+        SAMPLES=PREDICTED_CATEGORICAL_CLASS.shape[2],
+        OUTPUT_PATH=OUTPUT_PATH)
 
 
 
