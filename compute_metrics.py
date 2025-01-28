@@ -7,6 +7,28 @@ import time
 import patchify
 import os
 from utils_for_data_handling import *
+from sklearn.metrics import accuracy_score, balanced_accuracy_score
+
+def compute_metrics(predicted, ground_truth):
+    """
+    Computes accuracy and balanced accuracy between predicted and ground truth arrays.
+
+    Args:
+        predicted (np.ndarray): Predicted labels (num_x, num_y).
+        ground_truth (np.ndarray): Ground truth labels (num_x, num_y).
+
+    Returns:
+        dict: A dictionary with accuracy and balanced accuracy.
+    """
+    # Flatten arrays for metric computation
+    predicted_flat = predicted.ravel()
+    ground_truth_flat = ground_truth.ravel()
+
+    # Compute metrics
+    accuracy = accuracy_score(ground_truth_flat, predicted_flat)
+    balanced_accuracy = balanced_accuracy_score(ground_truth_flat, predicted_flat)
+
+    return {"accuracy": accuracy, "balanced_accuracy": balanced_accuracy}
 
 
 def VISUALISE_SEGMENTATION_RESULTS(IMAGE, FONTSIZE, FIGURE_TITLE, FIGSIZE, CHANNEL,\
@@ -422,8 +444,9 @@ def main():
         OUTPUT_PATH=OUTPUT_PATH)
 
     OUTPUT_PATH = "./images/ground_truth"
+    SAVE = PREDICTED_CATEGORICAL_CLASS
+    PREDICTED_CATEGORICAL_CLASS = LABELS
     for iterator_segmented_image in range(NUMBER_OF_IMAGES_IN_TEST_SET):
-        PREDICTED_CATEGORICAL_CLASS = LABELS
         print(PATHS_TO_LABELS[iterator_segmented_image])
         # Visualise next the results from the segmentation model
         VISUALISE_SEGMENTATION_RESULTS(IMAGE=iterator_segmented_image, \
@@ -440,6 +463,13 @@ def main():
         SAMPLES=PREDICTED_CATEGORICAL_CLASS.shape[2],
         OUTPUT_PATH=OUTPUT_PATH)
 
+    for iterator_segmented_image in range(NUMBER_OF_IMAGES_IN_TEST_SET):
+       predicted = SAVE[iterator_segmented_image]
+       ground = LABELS[iterator_segmented_image]
+       metrics = compute_metrics(predicted, ground)
+
+       print(f"Metrics for image {iterator_segmented_image}")
+       print(metrics)
 
 if __name__ == "__main__":
     main()

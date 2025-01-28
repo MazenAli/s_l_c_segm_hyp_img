@@ -1,3 +1,4 @@
 matplotlib
 numpy
 patchify
+scikit-learn
