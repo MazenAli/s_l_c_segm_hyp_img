@@ -111,48 +111,18 @@ def main():
     ### --> FOR USER: Enter next the local path where you have stored the images. Make sure to finish the path by /
     DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED = './data/'  # Example path
 
-    PATHS_TO_DATA = []  # Empty list for paths
-    # The images below are directly accessible for download in the supplementary material of our article: "Sea-Land-Cloud Segmentation in Satellite Hyperspectral Imagery by Deep Learning"
+    PATHS_TO_DATA = []
     PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '5-20220905_CaptureDL_00_fagradalsfjall_t_l_2022_09_05T12_37_23-radiance.npy')
-    """
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '8-20220911_CaptureDL_00_haida_2022_09_11T19_24_10-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '22-20221118_CaptureDL_sanrafael_2022_11_16T14_13_57-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '23-20221011_CaptureDL_rrvPlaya_2022_10_10T18_22_33-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '33-20221215_CaptureDL_maunaloa_2022_12_02T20_03_26-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '55-20221209_CaptureDL_bohai_2022_12_07T03_02_01-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '66-20221203_CaptureDL_falklands_2022_12_02T12_27_05-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '75-20221130_CaptureDL_vancouver_2022_11_27T19_22_56-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '78-20221130_CaptureDL_florida_2022_11_25T15_10_03-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '87-20221126_CaptureDL_tenerife_2022_11_21T11_15_03-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '88-20221126_CaptureDL_qatar_2022_11_20T06_42_58-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '91-20221126_CaptureDL_jiaozhouBayBridge_2022_11_20T01_54_58-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '92-20221126_CaptureDL_trondheim_2022_11_19T09_56_00-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '117-20221023_CaptureDL_gulfOfAqaba_07_49_08-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '122-20221020_CaptureDL_gobabeb_2022_10_20T08_39_51-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '135-20221010_CaptureDL_patra_2022_10_10T08_51_44-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '138-20221010_CaptureDL_tampa_target_l_2022_10_07T15_51_50-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '144-20220928_CaptureDL_00_belem_2022_09_28T13_03_32-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '145-20220927_CaptureDL_00_finnmark_71.1958_26.1931_2022_09_27T09_45_45-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '147-20220925_CaptureDL_00_santarem_2022_09_25T13_40_04-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '149-20220923_CaptureDL_00_lisbon_2022_09_23T10_43_19-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '176-20220908_CaptureDL_00_fagradalsfjall_2022_09_08T12_01_47-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '181-20220905_CaptureDL_00_eerie_t_r_2022_09_05T15_53_52-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '186-20220829_CaptureDL_00_runde_2022_08_29T10_50_39-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '208-20220806_CaptureDL_00_vancouverisland_2022_08_06T18_37_57-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '212-20220805_CaptureDL_00_balaton_2022_08_05T09_18_56-radiance.npy')
-
-    """
     PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '262-20220630_CaptureDL_00_grieg_T1929-radiance.npy')
 
-    """
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '268-20220621_Capture_DL_00_mjosa_T10_05-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '272-20220610_CaptureDL_00_Lofoten_10_34-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '274-20230215_CaptureDL_yangon_2023-02-15_0330Z-radiance.npy')
-    PATHS_TO_DATA.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + '275-20230313_CaptureDL_chapala_2023-02-19_1649Z_2-radiance.npy')
-    """
+    PATHS_TO_LABELS = []
+    PATHS_TO_LABELS.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + 'fagradalsfjall_t_l_2022_09_05T12_37_23_class_NPY_FORMAT.npy')
+    PATHS_TO_LABELS.append(DIRECTORY_WHERE_DATA_FOR_INFERENCE_IS_STORED + 'fagradalsfjall_t_l_2022_09_05T12_37_23_class_NPY_FORMAT.npy')
 
-    NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET =len(PATHS_TO_DATA)
-    print('Number of paths to images: ', NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET)
+    NUMBER_OF_IMAGES_IN_TEST_SET = len(PATHS_TO_DATA)
+    NUMBER_OF_LABELS_IN_TEST_SET = len(PATHS_TO_LABELS)
+    print('Number of paths to images: ', NUMBER_OF_IMAGES_IN_TEST_SET)
+    print('Number of paths to labels: ', NUMBER_OF_LABELS_IN_TEST_SET)
 
 
     ### MODEL ###
@@ -192,14 +162,25 @@ def main():
     LINES = 956
     SAMPLES = 684
     CHANNELS = 120  # Lines (frames), slit samples (swath), and channels are set to default values for HYPSO-1
-    DATA = -1 * np.ones((NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, LINES, SAMPLES, CHANNELS),
+    DATA = -1 * np.ones((NUMBER_OF_IMAGES_IN_TEST_SET, LINES, SAMPLES, CHANNELS),
                         dtype=np.float32)  # Radiance is float32 (4 bytes are enough)
 
     print('Loading data...')
-    for iterator_images in range(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET):
+    for iterator_images in range(NUMBER_OF_IMAGES_IN_TEST_SET):
         DATA[iterator_images, :, :, :] = np.load(PATHS_TO_DATA[iterator_images])
 
     print('Loaded! The data is loaded in an array of dimensions: ', DATA.shape)
+
+    ### LOAD LABELS ###
+
+    LABELS = -1 * np.ones((NUMBER_OF_LABELS_IN_TEST_SET, LINES, SAMPLES),
+                        dtype=int)  # Radiance is float32 (4 bytes are enough)
+
+    print('Loading data...')
+    for iterator_images in range(NUMBER_OF_LABELS_IN_TEST_SET):
+        LABELS[iterator_images, :, :] = np.load(PATHS_TO_LABELS[iterator_images])
+
+    print('Loaded! The labels loaded in an array of dimensions: ', LABELS.shape)
 
     ### SAVE IMAGE EXAMPLE ###
 
@@ -346,7 +327,7 @@ def main():
     print(
             '\nSegmentation inference running (it may take some time depending on the model, GPU, and number of images to segment)...')
 
-    print('Number of images to segment: ', NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, \
+    print('Number of images to segment: ', NUMBER_OF_IMAGES_IN_TEST_SET, \
               '\nFor instance, if each image takes for instance 15s (as in 1D-Justo-LiuNet), then the segmentation of e.g. 30 images would take over 7 minutes.')
     print('\nReminder of results: for 3D-Processing inferece time is significantly smaller')
     STARTING_TIME = time.time()
@@ -375,9 +356,9 @@ def main():
     # At this point, arange dimensions for PREDICTED_CATEGORICAL_CLASS and PREDICTED_PROBABILITY
     if DATA_PROCESSING_MODE == '1D_PROCESSING':
         print('Unflattening data points...')
-        PREDICTED_CATEGORICAL_CLASS = PREDICTED_CATEGORICAL_CLASS.reshape(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, LINES,
+        PREDICTED_CATEGORICAL_CLASS = PREDICTED_CATEGORICAL_CLASS.reshape(NUMBER_OF_IMAGES_IN_TEST_SET, LINES,
         SAMPLES)
-        PREDICTED_PROBABILITY = PREDICTED_PROBABILITY.reshape(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, LINES, SAMPLES)
+        PREDICTED_PROBABILITY = PREDICTED_PROBABILITY.reshape(NUMBER_OF_IMAGES_IN_TEST_SET, LINES, SAMPLES)
 
         print('UNFLATTENED OK - Dimensions for segmented dataset (categorical): ',
         PREDICTED_CATEGORICAL_CLASS.shape, ', and dtype: ', PREDICTED_CATEGORICAL_CLASS.dtype)
@@ -389,12 +370,12 @@ def main():
         # Stage 1: Unflatten the patches
         print('Unflattening patches...')
         PREDICTED_CATEGORICAL_CLASS = \
-        PREDICTED_CATEGORICAL_CLASS.reshape(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, \
+        PREDICTED_CATEGORICAL_CLASS.reshape(NUMBER_OF_IMAGES_IN_TEST_SET, \
         NUMBER_OF_PATCHES_IN_LINES_DIMENSION_ADJUSTED,
         NUMBER_OF_PATCHES_IN_SAMPLES_DIMENSION_ADJUSTED, \
         PATCH_SIZE, PATCH_SIZE)
         PREDICTED_PROBABILITY = \
-        PREDICTED_PROBABILITY.reshape(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, \
+        PREDICTED_PROBABILITY.reshape(NUMBER_OF_IMAGES_IN_TEST_SET, \
         NUMBER_OF_PATCHES_IN_LINES_DIMENSION_ADJUSTED,
         NUMBER_OF_PATCHES_IN_SAMPLES_DIMENSION_ADJUSTED, \
         PATCH_SIZE, PATCH_SIZE)
@@ -410,20 +391,20 @@ def main():
         print('\nThe unpatching next is for the categorical predictions:')
         PREDICTED_CATEGORICAL_CLASS = \
         utils_o.unpatch_predictions(PREDICTIONS_patched=PREDICTED_CATEGORICAL_CLASS, \
-        TARGET_shape=(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, LINES_AFTER_PADDING,
+        TARGET_shape=(NUMBER_OF_IMAGES_IN_TEST_SET, LINES_AFTER_PADDING,
         SAMPLES_AFTER_PADDING), \
         PATCH_SIZE=PATCH_SIZE)
         print('\nThe unpatching next is for the confidence probabilities:')
         PREDICTED_PROBABILITY = \
         utils_o.unpatch_predictions(PREDICTIONS_patched=PREDICTED_PROBABILITY, \
-        TARGET_shape=(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET, LINES_AFTER_PADDING,
+        TARGET_shape=(NUMBER_OF_IMAGES_IN_TEST_SET, LINES_AFTER_PADDING,
         SAMPLES_AFTER_PADDING), \
         PATCH_SIZE=PATCH_SIZE)
 
     ### VISUALIZE ###
 
     OUTPUT_PATH = "./images"
-    for iterator_segmented_image in range(NUMBER_OF_IMAGES_IN_DEPLOYMENT_SET):
+    for iterator_segmented_image in range(NUMBER_OF_IMAGES_IN_TEST_SET):
         print(PATHS_TO_DATA[iterator_segmented_image])
         # Visualise next the results from the segmentation model
         VISUALISE_SEGMENTATION_RESULTS(IMAGE=iterator_segmented_image, \
@@ -440,6 +421,24 @@ def main():
         SAMPLES=PREDICTED_CATEGORICAL_CLASS.shape[2],
         OUTPUT_PATH=OUTPUT_PATH)
 
+    OUTPUT_PATH = "./images/ground_truth"
+    for iterator_segmented_image in range(NUMBER_OF_IMAGES_IN_TEST_SET):
+        PREDICTED_CATEGORICAL_CLASS = LABELS
+        print(PATHS_TO_LABELS[iterator_segmented_image])
+        # Visualise next the results from the segmentation model
+        VISUALISE_SEGMENTATION_RESULTS(IMAGE=iterator_segmented_image, \
+        FONTSIZE=14, \
+        FIGURE_TITLE='Segmentation results', \
+        FIGSIZE=(17, 6), \
+        CHANNEL=89, \
+        DATA=DATA, \
+        SEGMENTED_IMAGE=PREDICTED_CATEGORICAL_CLASS[iterator_segmented_image, :,
+        :], \
+        CONFIDENCE_PROBABILITY_SPATIAL_DOMAIN=PREDICTED_PROBABILITY[
+        iterator_segmented_image, :, :], \
+        LINES=PREDICTED_CATEGORICAL_CLASS.shape[1], \
+        SAMPLES=PREDICTED_CATEGORICAL_CLASS.shape[2],
+        OUTPUT_PATH=OUTPUT_PATH)
 
 
 if __name__ == "__main__":
